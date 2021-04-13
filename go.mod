@@ -1,0 +1,1 @@
+module "github.com/Sora233/qq-cli"
