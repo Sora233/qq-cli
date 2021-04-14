@@ -50,7 +50,8 @@ func Login() error {
 		}
 	} else {
 		if err := client.SystemDeviceInfo.ReadJson(dj); err != nil {
-			logrus.WithError(err).Errorf("device.json error")
+			logrus.WithField("device-path", config.DevicePath).Errorf("device.json error")
+			return errors.New("device.json error")
 		}
 	}
 
@@ -144,6 +145,14 @@ func Login() error {
 			}
 		}
 		break
+	}
+	if err := bot.ReloadFriendList(); err != nil {
+		logrus.WithError(err).Error("ReloadFriendList failed")
+		return err
+	}
+	if err := bot.ReloadGroupList(); err != nil {
+		logrus.WithError(err).Error("ReloadGroupList failed")
+		return err
 	}
 	return nil
 }
